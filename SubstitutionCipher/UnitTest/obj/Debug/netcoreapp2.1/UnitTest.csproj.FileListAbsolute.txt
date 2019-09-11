@@ -1,0 +1,17 @@
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\UnitTest.deps.json
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\UnitTest.runtimeconfig.json
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\UnitTest.runtimeconfig.dev.json
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\UnitTest.dll
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\UnitTest.pdb
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\SubstitutionCipher.dll
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\bin\Debug\netcoreapp2.1\SubstitutionCipher.pdb
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\obj\Debug\netcoreapp2.1\UnitTest.csprojAssemblyReference.cache
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\obj\Debug\netcoreapp2.1\UnitTest.csproj.CoreCompileInputs.cache
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\obj\Debug\netcoreapp2.1\UnitTest.AssemblyInfoInputs.cache
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\obj\Debug\netcoreapp2.1\UnitTest.AssemblyInfo.cs
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\obj\Debug\netcoreapp2.1\UnitTest.csproj.CopyComplete
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\obj\Debug\netcoreapp2.1\UnitTest.dll
+C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\UnitTest\obj\Debug\netcoreapp2.1\UnitTest.pdb

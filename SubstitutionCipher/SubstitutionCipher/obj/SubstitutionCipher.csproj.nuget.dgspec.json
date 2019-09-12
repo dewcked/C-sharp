@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj": {}
+    "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj": {
+    "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj",
+        "projectUniqueName": "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj",
         "projectName": "SubstitutionCipher",
-        "projectPath": "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj",
+        "projectPath": "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj",
         "packagesPath": "C:\\Users\\USER-\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\obj\\",
+        "outputPath": "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -42,6 +42,7 @@
         "netcoreapp2.1": {
           "dependencies": {
             "Microsoft.NETCore.App": {
+              "suppressParent": "All",
               "target": "Package",
               "version": "[2.1.0, )",
               "autoReferenced": true

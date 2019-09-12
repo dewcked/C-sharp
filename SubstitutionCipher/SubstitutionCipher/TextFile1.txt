@@ -1,0 +1,11 @@
+﻿private static bool IsFairRoll(byte roll)
+    {
+        int fullSetsOfValues = Byte.MaxValue / 26;
+
+        // If the roll is within this range of fair values, then we let it continue.
+        // In the 6 sided die case, a roll between 0 and 251 is allowed.  (We use
+        // < rather than <= since the = portion allows through an extra 0 value).
+        // 252 through 255 would provide an extra 0, 1, 2, 3 so they are not fair
+        // to use.
+        return roll < 26 * fullSetsOfValues;
+    }

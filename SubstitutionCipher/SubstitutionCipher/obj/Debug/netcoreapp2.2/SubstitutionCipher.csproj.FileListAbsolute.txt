@@ -1,0 +1,8 @@
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Debug\netcoreapp2.2\SubstitutionCipher.deps.json
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Debug\netcoreapp2.2\SubstitutionCipher.runtimeconfig.json
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Debug\netcoreapp2.2\SubstitutionCipher.runtimeconfig.dev.json
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Debug\netcoreapp2.2\SubstitutionCipher.dll
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.2\SubstitutionCipher.csprojAssemblyReference.cache
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.2\SubstitutionCipher.csproj.CoreCompileInputs.cache
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.2\SubstitutionCipher.AssemblyInfoInputs.cache
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.2\SubstitutionCipher.AssemblyInfo.cs

@@ -1621,9 +1621,6 @@
       "SubstitutionCipher/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.1",
-        "dependencies": {
-          "Microsoft.NETCore.App": "2.1.0"
-        },
         "compile": {
           "bin/placeholder/SubstitutionCipher.dll": {}
         },
@@ -5839,11 +5836,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\UnitTest\\UnitTest.csproj",
+      "projectUniqueName": "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\UnitTest\\UnitTest.csproj",
       "projectName": "UnitTest",
-      "projectPath": "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\UnitTest\\UnitTest.csproj",
+      "projectPath": "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\UnitTest\\UnitTest.csproj",
       "packagesPath": "C:\\Users\\USER-\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\UnitTest\\obj\\",
+      "outputPath": "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\UnitTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5862,8 +5859,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj": {
-              "projectPath": "C:\\Users\\USER-\\Source\\Repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj"
+            "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj": {
+              "projectPath": "C:\\Users\\USER-\\source\\repos\\C-sharp\\SubstitutionCipher\\SubstitutionCipher\\SubstitutionCipher.csproj"
             }
           }
         }
@@ -5890,6 +5887,7 @@
             "version": "[15.9.0, )"
           },
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

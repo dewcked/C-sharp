@@ -8,3 +8,4 @@ C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\De
 C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.1\SubstitutionCipher.AssemblyInfo.cs
 C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.1\SubstitutionCipher.dll
 C:\Users\USER-\Source\Repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.1\SubstitutionCipher.pdb
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Debug\netcoreapp2.1\SubstitutionCipher.csprojAssemblyReference.cache

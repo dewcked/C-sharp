@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SubstitutionCipher": {
+      "commandName": "Project",
+      "commandLineArgs": "\"basestring.txt\""
+    }
+  }
+}

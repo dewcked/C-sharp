@@ -278,22 +278,22 @@ namespace SubstitutionCipher
 
 
             //print possible keys
-            for (i = 0; i <= max_len; i++)
-            {
-                foreach (var letter in pool[i])
-                {
-                    Write(letter.Key);
-                    foreach (var letter2 in letter.Value)
-                    {
-                        Write(" ");
-                        Write(letter2);
-                    }
-                    WriteLine();
-                }
-                WriteLine();
-            }
+            //for (i = 0; i <= max_len; i++)
+            //{
+            //    foreach (var letter in pool[i])
+            //    {
+            //        Write(letter.Key);
+            //        foreach (var letter2 in letter.Value)
+            //        {
+            //            Write(" ");
+            //            Write(letter2);
+            //        }
+            //        WriteLine();
+            //    }
+            //    WriteLine();
+            //}
             WriteLine();
-            List<char> used = new List<char>();
+            Dictionary<char, char> used = new Dictionary<char, char>();
             // print result
             StringBuilder decryptedhalf = new StringBuilder();
             StreamReader file2 = new StreamReader(filename);
@@ -312,8 +312,8 @@ namespace SubstitutionCipher
                             if (pool[max_len].ContainsKey(chr))
                             {
                                 decryptedhalf.Append(pool[max_len][chr][0]);
-                                if (!used.Contains(pool[max_len][chr][0]))
-                                    used.Add(pool[max_len][chr][0]);
+                                if (!used.ContainsKey(pool[max_len][chr][0]))
+                                    used.Add(pool[max_len][chr][0], chr);
                             }
                             else
                             {
@@ -329,7 +329,6 @@ namespace SubstitutionCipher
                 decryptedhalf.Append("\n");
             }
             string halfdecrypted = decryptedhalf.ToString();
-            WriteLine(decryptedhalf);
             decryptedhalf.Clear();
 
             for (i = 0; i < max_len; i++)
@@ -366,7 +365,7 @@ namespace SubstitutionCipher
                                     }
                                     else if (str2[i] == '_')
                                     {
-                                        if (used.Contains(dictletter2[i]))
+                                        if (used.ContainsKey(dictletter2[i]))
                                         {
                                             fail = 1;
                                             break;
@@ -426,7 +425,7 @@ namespace SubstitutionCipher
                             if (!pool[max_len].ContainsKey(spool.Key))
                             {
                                 pool[max_len].Add(spool.Key, spool.Value);
-                                used.Add(spool.Value[0]);
+                                used.Add(spool.Value[0], spool.Key);
                             }
 
             mustfillidx = 0;
@@ -455,7 +454,11 @@ namespace SubstitutionCipher
                 }
                 WriteLine();
             }
-            //foreach(var locked in used):
+            List<char> tmpkey = used.Keys.ToList();
+            tmpkey.Sort();
+            WriteLine("Decrypted Key table");
+            foreach (var key in tmpkey)
+                WriteLine($"{used[key]} => {key}");
 
         }
         //First call to Calculate Max Length of words

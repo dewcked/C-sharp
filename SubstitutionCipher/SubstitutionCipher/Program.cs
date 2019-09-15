@@ -1,11 +1,11 @@
 ﻿using System;
-using static System.Console;
-using System.Runtime.CompilerServices;
-using System.Linq;
-using System.IO;
-using System.Security.Cryptography;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
+using static System.Console;
 
 [assembly: InternalsVisibleTo("UnitTest")]
 
@@ -22,10 +22,10 @@ namespace SubstitutionCipher
 
         static Dictionary<char, int> frequency_global = new Dictionary<char, int>();
         static Dictionary<char, int> frequency_local = new Dictionary<char, int>();
-
+        static int max_len;
         static void Main(string[] args)
         {
-            string input = null;
+            string user_input = null;
             StringBuilder text = new StringBuilder();
             if (args == null)
             {
@@ -42,8 +42,8 @@ namespace SubstitutionCipher
             }
 
             WriteLine("What you wanna do?\n1)encrypt\t2)decrypt");
-            input = ReadLine();
-            if (Int32.TryParse(input, out int choice))
+            user_input = ReadLine();
+            if (Int32.TryParse(user_input, out int choice))
             {
                 switch (choice)
                 {
@@ -61,14 +61,14 @@ namespace SubstitutionCipher
                         break;
                 }
             }
-            else if (input.ToLower().Equals("encrypt") || input.ToLower().Equals("enc"))
+            else if (user_input.ToLower().Equals("encrypt") || user_input.ToLower().Equals("enc"))
             {
                 if (args != null)
                     Encryption(args[0]);
                 else
                     Encryption("basestring.txt");
             }
-            else if (input.ToLower().Equals("decrypt") || input.ToLower().Equals("dec"))
+            else if (user_input.ToLower().Equals("decrypt") || user_input.ToLower().Equals("dec"))
             {
                 if (args != null)
                     Decryption(args[0]);
@@ -82,11 +82,11 @@ namespace SubstitutionCipher
             WriteLine("Press any key to terminate this program...");
             ReadKey();
         }
-        //Checking the argument input from ciphertext.txt\n
+
         private static RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
         static void Encryption(string filename)
         {
-            List<char> component = new List<char>{ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z' };
+            List<char> pool = new List<char>{ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z' };
             string dictionary = "abcdefghijklmnopqrstuvwxyz";
             Dictionary<char, char> key = new Dictionary<char, char>();
             int idx = 0;
@@ -94,10 +94,10 @@ namespace SubstitutionCipher
             StringBuilder text = new StringBuilder();
             text.Append(File.ReadAllLines(filename));
 
-            while (component.Count != 0) {
-                var tmp = GenKey(component.Count);
-                key.Add(dictionary[idx++], component[tmp]);
-                component.RemoveAt(tmp);
+            while (pool.Count != 0) {
+                var tmp = GenKey(pool.Count);
+                key.Add(dictionary[idx++], pool[tmp]);
+                pool.RemoveAt(tmp);
             }
             WriteLine("The encryption key is ");
             foreach(var i in key){
@@ -131,127 +131,194 @@ namespace SubstitutionCipher
         
         static void Decryption(string filename)
         {
-            List<char> component = new List<char> { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-            string dictionary = "abcdefghijklmnopqrstuvwxyz";
-            Dictionary<char, char> key = new Dictionary<char, char>();
-            int succeed = 0;
+            int i, j;
+            //Calculate Max Word Length
+            CalculateMaxLen(filename);
+            //Make dictionary parse
+            Dictionary<int[], List<string>>[] enc = ParsePattern(filename);
+            Dictionary<int[], List<string>>[] dict = ParsePattern("dictionary.txt");
 
-            Dictionary<int[], List<string>> dict = ParsePattern("dictionary.txt", "frequency_global");
-            Dictionary<int[], List<string>> enc = ParsePattern(filename, "frequency_local");
-
-            Dictionary<char, List<char>> guessing = new Dictionary<char, List<char>>();
-
+            //Make Frequency Table
             var global_sort = frequency_global.Keys.ToList();
             var local_sort = frequency_local.Keys.ToList();
             global_sort.Sort();
             local_sort.Sort();
 
-            WriteLine("Dictionary Frequency rate");
+            WriteLine("Dictionary Frequency table");
             foreach (var glokey in global_sort)
                 WriteLine($"{glokey} {frequency_global[glokey]} ");
-            WriteLine("Encrypted Text Frequency rate");
+            WriteLine("Encrypted Text Frequency table");
             foreach (var lockey in local_sort)
                 WriteLine($"{lockey} {frequency_local[lockey]} ");
 
-            //foreach(var encletters in enc)
-            //{
-            //    foreach(var dicletters in dict)
-            //    {
-            //        if (IsSame(encletters.Key,dicletters.Key))
-            //        {
-            //            foreach(var encletter in encletters.Value)
-            //            {
-            //                foreach (var dicletter in dicletters.Value)
-            //                {
-            //                    var len = encletter.Length;
-            //                    for (int i = 0; i < len; i++)
-            //                    {
-            //                        if (!guessing.ContainsKey(encletter[i]))
-            //                            guessing.Add(encletter[i], new List<word> { new word { letter = dicletter[i], depth = len } } );
-            //                        else
-            //                            guessing[encletter[i]].Add(new word { letter = dicletter[i], depth = len });
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //for (var k = 100; k > 0; k--)
-            //{
-            //    foreach (var i in guessing)
-            //    {
-            //        foreach (var j in i.Value)
-            //        {
-            //            //WriteLine($"{i.Key}\t{j.depth}\t{j.letter}");
-            //            if(j.depth == k)
+            Dictionary<int[], List<string>>[] words = MatchPattern(dict, enc);
+            Dictionary<char, List<char>>[] pool = new Dictionary<char, List<char>>[max_len+1];
+            for(i=0;i<=max_len;i++)
+                pool[i] = new Dictionary<char, List<char>>();
 
-            //        }
-            //    }
-            //}
-            Dictionary<int[], List<string>> words = MatchPattern(dict, enc);
-
-            //foreach(var letter in words)
-            //{
-            //    foreach(var charchar in letter.Value)
-            //    {
-            //        WriteLine(charchar);
-            //    }
-            //}
-            for (var k = 13; k != 0; k--)
-                foreach (var item in words)
-                    foreach (var encrypted in enc)
-                        if (item.Key.Length == k && IsSame(item.Key, encrypted.Key))
+            for (i = 0; i != max_len; i++)
+                foreach (var item in words[i])
+                    foreach (var encrypted in enc[i])
+                        if (item.Key.Length == i + 1 && IsSame(item.Key, encrypted.Key))
                             foreach (var realitem in item.Value)
                                 foreach (var realencrypted in encrypted.Value)
-                                    for (int j = 0; j < k; j++)
-                                        if (!guessing.ContainsKey(realencrypted[j]))
-                                            guessing.Add(realencrypted[j], new List<char> { realitem[j] });
-                                        else if (guessing[realencrypted[j]].Contains(realitem[j]))
+                                {
+                                    for (j = 0; j < i + 1; j++)
+                                        if (!pool[i].ContainsKey(realencrypted[j]))
+                                            pool[i].Add(realencrypted[j], new List<char> { realitem[j] });
+                                        else if (pool[i][realencrypted[j]].Contains(realitem[j]))
                                             continue;
-                                        else if (!guessing[realencrypted[j]].Contains(realitem[j]) && k != 12)
-                                            break;
                                         else
-                                            guessing[realencrypted[j]].Add(realitem[j]);
+                                            pool[i][realencrypted[j]].Add(realitem[j]);
+                                }
 
-
-            foreach(var letter in guessing)
+            //To maximize guessing, filter out
+            for(i = max_len-1; i >= 0; i--)
             {
-                Write(letter.Key);
-                foreach(var letter2 in letter.Value)
+                int unique=1;
+                int len = pool[i].Count;
+                Dictionary<char, List<char>> tmpchr = new Dictionary<char, List<char>>();
+                unique = 1;
+                for (j = 0; j < len; j++)
                 {
-                    Write(" ");
-                    Write(letter2);
+                    if (pool[i].ElementAt(j).Value.Count != 1)
+                    {
+                        unique = 0;
+                        if (pool[max_len].ContainsKey(pool[i].ElementAt(j).Key))
+                        {
+                            foreach (var chr in pool[i].ElementAt(j).Value)
+                                if (pool[max_len][pool[i].ElementAt(j).Key].Contains(chr))
+                                    if (!tmpchr.ContainsKey(pool[i].ElementAt(j).Key))
+                                        tmpchr.Add(pool[i].ElementAt(j).Key, new List<char> { chr });
+                                    else
+                                        tmpchr[pool[i].ElementAt(j).Key].Add(chr);
+                        }
+
+                        //tmpchr.Clear();
+                        //foreach(var chr in guessing[maxlen])
+                        //    tmpchr.Add(chr.Key);
+                        //foreach (var dicletter in words)
+                        //    if (dicletter.Key.Length == k + 1)
+                        //        foreach (var tmpstr in dicletter.Value)
+                        //        {
+                        //            for(int i=0;i<k+1;i++)
+                        //                foreach(var comparestr in guessing[k])
+                        //                    if (comparestr.Value.Contains(tmpstr[i]))
+                        //                        if (comparestr.Value.Count > 1)
+                        //                            comparestr.Value.Remove(tmpstr[i]);
+
+
+                        //        }
+                    }
+                }
+                foreach (var chr in tmpchr)
+                    foreach(var chr2 in chr.Value)
+                        pool[i][chr.Key].Remove(chr2);
+                if(unique == 1)
+                    foreach (var wordlist in pool[i])
+                        if (!pool[max_len].ContainsKey(wordlist.Key))
+                            pool[max_len].Add(wordlist.Key, wordlist.Value);
+            }
+            //to maximize guessing part 2
+            //for (i = 0; i < max_len; i++)
+            //    foreach (var strs in words[i])
+            //        foreach (var str in strs.Value) {
+            //            var len = str.Length;
+            //            for (j = 0; j < len; j++)
+            //                foreach (var poolval in pool[max_len])
+            //                    if (!poolval.Value.Contains(str[j])) {
+
+            //                    }
+                                    
+            //        }
+
+
+            WriteLine();
+            //print possible keys
+            for (i = 0; i <= max_len; i++)
+            {
+                foreach (var letter in pool[i])
+                {
+                    Write(letter.Key);
+                    foreach (var letter2 in letter.Value)
+                    {
+                        Write(" ");
+                        Write(letter2);
+                    }
+                    WriteLine();
                 }
                 WriteLine();
             }
+            WriteLine();
 
+            // print result
             StreamReader file2 = new StreamReader(filename);
             while (!file2.EndOfStream)
             {
-                string tmp = file2.ReadLine();
-                foreach (var chr in tmp)
+                string[] tmps = file2.ReadLine().Split(" ");
+                foreach (var tmp in tmps)
                 {
-                    if (IsAlpha(chr))
+                    var reallen = RealLen(tmp);
+                    foreach (var chr in tmp)
                     {
-                        if (guessing.ContainsKey(chr))
-                            Write(guessing[chr][0]);
+                        if (IsAlpha(chr))
+                        {
+                            if (pool[max_len].ContainsKey(chr))
+                                Write(pool[max_len][chr][0]);
+                            else if (pool[reallen - 1].ContainsKey(chr))
+                            {
+                                foreach (var chr2 in pool[reallen - 1][chr]) {
+                                    if (!pool[max_len].ContainsKey(chr2))
+                                    {
+                                        Write(chr2);
+                                        pool[max_len].Add(chr, new List<char> { chr2 });
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                                Write("_");
+                        }
                         else
-                            Write("_");
+                            Write(chr);
                     }
-                    else
-                        Write(chr);
+                    Write(" ");
                 }
                 WriteLine();
             }
 
         }
-        static Dictionary<int[], List<string>> MatchPattern(Dictionary<int[], List<string>> dict, Dictionary<int[], List<string>> enc)
+        //First call to Calculate Max Length of words
+        static void CalculateMaxLen(string filename)
         {
-            Dictionary<int[], List<string>> pattern = new Dictionary<int[], List<string>>();
-            foreach(var letter in enc)
-                foreach(var dicletter in dict)
-                    if (IsSame(letter.Key, dicletter.Key) && !pattern.ContainsKey(dicletter.Key))
-                        pattern.Add(dicletter.Key, dicletter.Value);
+            StreamReader file = new StreamReader(filename);
+            int len;
+            while(!file.EndOfStream)
+                foreach (var str in file.ReadLine().Split(" "))
+                {
+                    len = RealLen(str);
+                    max_len = max_len > len ? max_len : len;
+                }
+        }
+        //Calculate Real Length except special chars
+        static int RealLen(string str)
+        {
+            int len = 0;
+            foreach (var chr in str)
+                if (IsAlpha(chr))
+                    len++;
+            return len;
+        }
+        static Dictionary<int[], List<string>>[] MatchPattern(Dictionary<int[], List<string>>[] dict, Dictionary<int[], List<string>>[] enc)
+        {
+            Dictionary<int[], List<string>>[] pattern = new Dictionary<int[], List<string>>[max_len];
+            for (int i = 0; i < max_len; i++)
+                pattern[i] = new Dictionary<int[], List<string>>();
+            for(int i=0;i<max_len;i++)
+                foreach(var letter in enc[i])
+                    foreach(var dicletter in dict[i])
+                        if (IsSame(letter.Key, dicletter.Key) && !pattern[i].ContainsKey(dicletter.Key))
+                            pattern[i].Add(dicletter.Key, dicletter.Value);
             return pattern;
         }
         static bool IsSame(int[] arr1, int[] arr2)
@@ -268,15 +335,19 @@ namespace SubstitutionCipher
         {
             return (chr >= 'A' && chr <= 'Z');
         }
-        static Dictionary<int[], List<string>> ParsePattern(string filename, string frequency)
+        static Dictionary<int[], List<string>>[] ParsePattern(string filename)
         {
             StreamReader file = new StreamReader(filename);
-            Dictionary<int[], List<string>> parsed = new Dictionary<int[], List<string>>();
+            Dictionary<int[], List<string>>[] parsed = new Dictionary<int[], List<string>>[max_len];
             int charidx;
             int intidx;
-            char[] tempchar = new char[26];
-            int[] tempint = new int[100];
+            char[] tmpchar = new char[26];
+            int[] tmpint = new int[100];
             int i;
+
+            for (i = 0; i < max_len; i++)
+                parsed[i] = new Dictionary<int[], List<string>>();
+
             while (!file.EndOfStream)
             {
                 string line = file.ReadLine();
@@ -285,85 +356,73 @@ namespace SubstitutionCipher
                     {
                         charidx = -1;
                         intidx = -1;
-                        string final = null;
+                        string realstr = null;
                         foreach (var chr in words)
                         {
                             if (IsAlpha(chr))
                             {
-                                final += chr;
-                                if (frequency.Equals("frequency_local"))
-                                    if (frequency_local.ContainsKey(chr))
-                                        frequency_local[chr]++;
-                                    else
-                                        frequency_local.Add(chr, 1);
-                                else if (frequency.Equals("frequency_global"))
-                                    if (frequency_global.ContainsKey(chr))
-                                        frequency_global[chr]++;
-                                    else
-                                        frequency_global.Add(chr, 1);
+                                realstr += chr;
+                                if (frequency_local.ContainsKey(chr))
+                                    frequency_local[chr]++;
+                                else
+                                    frequency_local.Add(chr, 1);
 
                                 for (i = 0; i <= charidx; i++)
-                                    if (tempchar[i] == chr)
+                                    if (tmpchar[i] == chr)
                                     {
-                                        tempint[++intidx] = i;
+                                        tmpint[++intidx] = i;
                                         break;
                                     }
                                 if (i > charidx || intidx == -1)
                                 {
-                                    tempint[++intidx] = ++charidx;
-                                    tempchar[charidx] = chr;
+                                    tmpint[++intidx] = ++charidx;
+                                    tmpchar[charidx] = chr;
                                 }
                             }
                         }
+                        if (intidx == -1)
+                            continue;
                         int[] inputint = new int[intidx+1];
-                        Array.Copy(tempint, inputint, intidx+1);
-                        if (!parsed.ContainsKey(inputint))
-                            parsed.Add(inputint, new List<string> {final});
+                        Array.Copy(tmpint, inputint, intidx+1);
+                        if (!parsed[intidx].ContainsKey(inputint))
+                            parsed[intidx].Add(inputint, new List<string> {realstr});
                         else
-                            parsed[inputint].Add(final);
+                            parsed[intidx][inputint].Add(realstr);
                     }
                 else
                 {
+                    if (line.Length > max_len)
+                        continue;
                     charidx = -1;
                     intidx = -1;
                     foreach (var chr in line)
                     {
                         if (IsAlpha(chr))
                         {
-                            if (frequency.Equals("frequency_local"))
-                                if (frequency_local.ContainsKey(chr))
-                                    frequency_local[chr]++;
-                                else
-                                    frequency_local.Add(chr, 1);
-                            else if (frequency.Equals("frequency_global"))
-                                if (frequency_global.ContainsKey(chr))
-                                    frequency_global[chr]++;
-                                else
-                                    frequency_global.Add(chr, 1);
+                            if (frequency_global.ContainsKey(chr))
+                                frequency_global[chr]++;
+                            else
+                                frequency_global.Add(chr, 1);
 
                             for (i = 0; i <= charidx; i++)
-                                if (tempchar[i] == chr)
+                                if (tmpchar[i] == chr)
                                 {
-                                    tempint[++intidx] = i;
+                                    tmpint[++intidx] = i;
                                     break;
                                 }
                             if (i > charidx || intidx == -1)
                             {
-                                tempint[++intidx] = ++charidx;
-                                tempchar[charidx] = chr;
+                                tmpint[++intidx] = ++charidx;
+                                tmpchar[charidx] = chr;
                             }
                         }
                     }
-                    //Write(line+" ");
-                    //for (int j=0;j<= intidx; j++)
-                    //    Write($"{tempint[j]} ");
-                    //WriteLine();
                     int[] inputint = new int[intidx+1];
-                    Array.Copy(tempint, inputint, intidx+1);
-                    if (!parsed.ContainsKey(inputint))
-                        parsed.Add(inputint, new List<string> { line });
+                    Array.Copy(tmpint, inputint, intidx+1);
+                    if (!parsed[intidx].ContainsKey(inputint))
+                        parsed[intidx].Add(inputint, new List<string> { line });
                     else
-                        parsed[inputint].Add(line);
+                        parsed[intidx][inputint].Add(line);
                 }
             }
 

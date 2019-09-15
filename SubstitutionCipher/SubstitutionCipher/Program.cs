@@ -86,7 +86,7 @@ namespace SubstitutionCipher
         private static RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
         static void Encryption(string filename)
         {
-            List<char> pool = new List<char>{ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z' };
+            List<char> pool = new List<char> { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
             string dictionary = "abcdefghijklmnopqrstuvwxyz";
             Dictionary<char, char> key = new Dictionary<char, char>();
             int idx = 0;
@@ -100,11 +100,11 @@ namespace SubstitutionCipher
                 pool.RemoveAt(tmp);
             }
             WriteLine("The encryption key is ");
-            foreach(var i in key){
+            foreach (var i in key) {
                 WriteLine($"\t{i.Key}\t=>\t{i.Value}");
             }
 
-            for(int i=0;i<text.Length;i++)
+            for (int i = 0; i < text.Length; i++)
             {
                 if (IsAlpha(text[i]))
                     text[i] = key[text[i]];
@@ -128,7 +128,7 @@ namespace SubstitutionCipher
 
             return randomByte[0] % len;
         }
-        
+
         static void Decryption(string filename)
         {
             int i, j;
@@ -152,8 +152,8 @@ namespace SubstitutionCipher
                 WriteLine($"{lockey} {frequency_local[lockey]} ");
 
             Dictionary<int[], List<string>>[] words = MatchPattern(dict, enc);
-            Dictionary<char, List<char>>[] pool = new Dictionary<char, List<char>>[max_len+1];
-            for(i=0;i<=max_len;i++)
+            Dictionary<char, List<char>>[] pool = new Dictionary<char, List<char>>[max_len + 1];
+            for (i = 0; i <= max_len; i++)
                 pool[i] = new Dictionary<char, List<char>>();
 
             for (i = 0; i != max_len; i++)
@@ -173,9 +173,9 @@ namespace SubstitutionCipher
                                 }
 
             //To maximize guessing, filter out
-            for(i = max_len-1; i >= 0; i--)
+            for (i = max_len - 1; i >= 0; i--)
             {
-                int unique=1;
+                int unique = 1;
                 int len = pool[i].Count;
                 Dictionary<char, List<char>> tmpchr = new Dictionary<char, List<char>>();
                 unique = 1;
@@ -187,53 +187,96 @@ namespace SubstitutionCipher
                         if (pool[max_len].ContainsKey(pool[i].ElementAt(j).Key))
                         {
                             foreach (var chr in pool[i].ElementAt(j).Value)
-                                if (pool[max_len][pool[i].ElementAt(j).Key].Contains(chr))
+                                if (!pool[max_len][pool[i].ElementAt(j).Key].Contains(chr))
                                     if (!tmpchr.ContainsKey(pool[i].ElementAt(j).Key))
                                         tmpchr.Add(pool[i].ElementAt(j).Key, new List<char> { chr });
                                     else
                                         tmpchr[pool[i].ElementAt(j).Key].Add(chr);
                         }
-
-                        //tmpchr.Clear();
-                        //foreach(var chr in guessing[maxlen])
-                        //    tmpchr.Add(chr.Key);
-                        //foreach (var dicletter in words)
-                        //    if (dicletter.Key.Length == k + 1)
-                        //        foreach (var tmpstr in dicletter.Value)
-                        //        {
-                        //            for(int i=0;i<k+1;i++)
-                        //                foreach(var comparestr in guessing[k])
-                        //                    if (comparestr.Value.Contains(tmpstr[i]))
-                        //                        if (comparestr.Value.Count > 1)
-                        //                            comparestr.Value.Remove(tmpstr[i]);
-
-
-                        //        }
                     }
                 }
                 foreach (var chr in tmpchr)
-                    foreach(var chr2 in chr.Value)
+                    foreach (var chr2 in chr.Value)
                         pool[i][chr.Key].Remove(chr2);
-                if(unique == 1)
+                if (unique == 1)
                     foreach (var wordlist in pool[i])
                         if (!pool[max_len].ContainsKey(wordlist.Key))
                             pool[max_len].Add(wordlist.Key, wordlist.Value);
             }
             //to maximize guessing part 2
-            //for (i = 0; i < max_len; i++)
-            //    foreach (var strs in words[i])
-            //        foreach (var str in strs.Value) {
-            //            var len = str.Length;
-            //            for (j = 0; j < len; j++)
-            //                foreach (var poolval in pool[max_len])
-            //                    if (!poolval.Value.Contains(str[j])) {
+            Dictionary<int[], List<string>>[] filterlist = new Dictionary<int[], List<string>>[max_len];
+            for (i = 0; i < max_len; i++)
+                filterlist[i] = new Dictionary<int[], List<string>>();
+            for (i = max_len - 1; i >= 0; i--)
 
-            //                    }
-                                    
-            //        }
+                foreach (var strs in words[i])
+
+                {
+                    List<char> tmpchr = new List<char>();
+                    foreach (var str in strs.Value)
+                    {
+                        var len = str.Length;
+
+                        for (j = 0; j < len; j++)
+                            foreach (var poolval in pool[i])
+                            {
+                                if (poolval.Value.Contains(str[j]))
+                                {
+                                    tmpchr.Add(str[j]);
+                                }
+                            }
+                        if (tmpchr.Count == len)
+                        {
+                            if (!filterlist[i].ContainsKey(strs.Key))
+                                filterlist[i].Add(strs.Key, new List<string> { str });
+                            else
+                                filterlist[i][strs.Key].Add(str);
+                        }
+                    }
+
+                }
 
 
             WriteLine();
+            //filter out everything
+            for (i = max_len - 1; i >= 0; i--)
+            {
+                List<char> tmpchr = new List<char>();
+                List<char> removal = new List<char>();
+                Dictionary<char, List<char>> tmpremoval = new Dictionary<char, List<char>>();
+                foreach (var filter in filterlist[i])
+                    foreach (var filterword in filter.Value)
+                        foreach (var chr in filterword)
+                            if (!tmpchr.Contains(chr))
+                                tmpchr.Add(chr);
+                if (filterlist[i].Count == 0)
+                    continue;
+                foreach (var spool in pool[i])
+                    foreach (var spoolchr in spool.Value)
+                        if (!tmpchr.Contains(spoolchr))
+                            removal.Add(spoolchr);
+                foreach (var chr in removal)
+                {
+                    var change = 1;
+                    foreach (var removechr in pool[i])
+                        if (removechr.Value.Contains(chr))
+                            if (!tmpremoval.ContainsKey(removechr.Key))
+                                tmpremoval.Add(removechr.Key, new List<char> { chr });
+                            else
+                                tmpremoval[removechr.Key].Add(chr);
+
+                }
+                foreach (var chrs in tmpremoval)
+                    foreach (var chr in chrs.Value)
+                        pool[i][chrs.Key].Remove(chr);
+
+                foreach (var chr1 in pool[i])
+                    if (!pool[max_len].ContainsKey(chr1.Key))
+                        pool[max_len].Add(chr1.Key, chr1.Value);
+
+            }
+
+
             //print possible keys
             for (i = 0; i <= max_len; i++)
             {
@@ -250,9 +293,12 @@ namespace SubstitutionCipher
                 WriteLine();
             }
             WriteLine();
-
+            List<char> used = new List<char>();
             // print result
+            StringBuilder decryptedhalf = new StringBuilder();
             StreamReader file2 = new StreamReader(filename);
+            List<char> mustfill = new List<char>();
+            int mustfillidx = 0;
             while (!file2.EndOfStream)
             {
                 string[] tmps = file2.ReadLine().Split(" ");
@@ -264,28 +310,152 @@ namespace SubstitutionCipher
                         if (IsAlpha(chr))
                         {
                             if (pool[max_len].ContainsKey(chr))
-                                Write(pool[max_len][chr][0]);
-                            else if (pool[reallen - 1].ContainsKey(chr))
                             {
-                                foreach (var chr2 in pool[reallen - 1][chr]) {
-                                    if (!pool[max_len].ContainsKey(chr2))
-                                    {
-                                        Write(chr2);
-                                        pool[max_len].Add(chr, new List<char> { chr2 });
-                                        break;
-                                    }
-                                }
+                                decryptedhalf.Append(pool[max_len][chr][0]);
+                                if (!used.Contains(pool[max_len][chr][0]))
+                                    used.Add(pool[max_len][chr][0]);
                             }
                             else
-                                Write("_");
+                            {
+                                mustfill.Add(chr);
+                                decryptedhalf.Append("_");
+                            }
                         }
                         else
-                            Write(chr);
+                            decryptedhalf.Append(chr);
+                    }
+                    decryptedhalf.Append(" ");
+                }
+                decryptedhalf.Append("\n");
+            }
+            string halfdecrypted = decryptedhalf.ToString();
+            WriteLine(decryptedhalf);
+            decryptedhalf.Clear();
+
+            for (i = 0; i < max_len; i++)
+                foreach (var chrkey in pool)
+                    chrkey.Clear();
+
+            foreach (var str1 in halfdecrypted.Split("\n"))
+            {
+                foreach (var str2 in str1.Split(" "))
+                {
+                    var reallen = RealhalfLen(str2);
+                    string tmpchar = null;
+                    var idx = 0;
+                    if (reallen == 0)
+                    {
+                        decryptedhalf.Append(str2 + " ");
+                        continue;
+                    }
+                    if (str2.Contains("_"))
+                    {
+                        foreach (var dictletter in words[reallen - 1])
+                        {
+                            foreach (var dictletter2 in dictletter.Value)
+                            {
+                                var fail = 0;
+                                idx = mustfillidx;
+                                Dictionary<char, char> minimap = new Dictionary<char, char>();
+
+                                for (i = 0; i < reallen; i++)
+                                    if (str2[i] != '_' && dictletter2[i] != str2[i])
+                                    {
+                                        fail = 1;
+                                        break;
+                                    }
+                                    else if (str2[i] == '_')
+                                    {
+                                        if (used.Contains(dictletter2[i]))
+                                        {
+                                            fail = 1;
+                                            break;
+                                        }
+                                        foreach (var tmp in minimap)
+                                            if (tmp.Key == mustfill.ElementAt(idx))
+                                                if (tmp.Value != dictletter2[i])
+                                                {
+                                                    fail = 1;
+                                                    break;
+                                                }
+                                        if (!minimap.ContainsKey(mustfill.ElementAt(idx)))
+                                            minimap.Add(mustfill.ElementAt(idx++), dictletter2[i]);
+                                        //else
+                                        //{
+                                        //    if(!minimap[mustfill.ElementAt(idx)].Equals(dictletter2[i]))
+                                        //        minimap.Add(mustfill.ElementAt(idx), dictletter2[i]);
+                                        //}
+                                    }
+
+                                //71 72 73 가야되는데 69 70 71
+                                idx = mustfillidx;
+                                if (fail == 0)
+                                {
+                                    for (i = 0; i < reallen; i++)
+                                        if (str2[i] == '_')
+                                        {
+
+                                            if (!pool[reallen - 1].ContainsKey(mustfill.ElementAt(idx)))
+                                                pool[reallen - 1].Add(mustfill.ElementAt(idx), new List<char> { dictletter2[i] });
+                                            else if (!pool[reallen - 1][mustfill.ElementAt(idx)].Contains(dictletter2[i]))
+                                                pool[reallen - 1][mustfill.ElementAt(idx)].Add(dictletter2[i]);
+                                            idx++;
+                                        }
+
+                                    
+                                }
+                            }
+                        }
+                        for (i = 0; i < reallen; i++)
+                            if (str2[i] == '_')
+                                mustfillidx++;
+                        // very important
+
+
+                    }
+                    tmpchar = str2;
+                    decryptedhalf.Append(tmpchar + " ");
+                }
+                decryptedhalf.Append("\n");
+            }
+
+            for (i = 0; i < mustfill.Count; i++)
+                for (j = 0; j < max_len; j++)
+                    foreach (var spool in pool[j])
+                        if (spool.Value.Count == 1 && spool.Key == mustfill.ElementAt(i))
+                            if (!pool[max_len].ContainsKey(spool.Key))
+                            {
+                                pool[max_len].Add(spool.Key, spool.Value);
+                                used.Add(spool.Value[0]);
+                            }
+
+            mustfillidx = 0;
+            file2 = new StreamReader(filename);
+            foreach (var chr in decryptedhalf.ToString().Split("\n")) {
+                foreach (var chr2 in chr.Split(" ")) {
+                    var len = RealhalfLen(chr2);
+                    foreach (var chr3 in chr2) {
+                        if (chr3 == '_') {
+                            if (pool[max_len].ContainsKey(mustfill[mustfillidx]))
+                            {
+                                Write(pool[max_len][(mustfill[mustfillidx])][0]);
+                                //if (!used.Contains(pool[len - 1][(mustfill[mustfillidx])][0]))
+                                //    used.Add(pool[len - 1][(mustfill[mustfillidx])][0]);
+                            }
+                            else
+                            {
+                                Write("_");
+                            }
+                            mustfillidx++;
+                        }
+                        else
+                            Write(chr3);
                     }
                     Write(" ");
                 }
                 WriteLine();
             }
+            //foreach(var locked in used):
 
         }
         //First call to Calculate Max Length of words
@@ -306,6 +476,14 @@ namespace SubstitutionCipher
             int len = 0;
             foreach (var chr in str)
                 if (IsAlpha(chr))
+                    len++;
+            return len;
+        }
+        static int RealhalfLen(string str)
+        {
+            int len = 0;
+            foreach (var chr in str)
+                if (IsAlpha(chr) || chr == '_')
                     len++;
             return len;
         }

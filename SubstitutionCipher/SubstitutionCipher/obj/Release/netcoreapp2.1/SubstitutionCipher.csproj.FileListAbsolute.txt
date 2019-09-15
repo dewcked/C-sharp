@@ -1,0 +1,11 @@
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Release\netcoreapp2.1\SubstitutionCipher.deps.json
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Release\netcoreapp2.1\SubstitutionCipher.runtimeconfig.json
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Release\netcoreapp2.1\SubstitutionCipher.runtimeconfig.dev.json
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Release\netcoreapp2.1\SubstitutionCipher.dll
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\bin\Release\netcoreapp2.1\SubstitutionCipher.pdb
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Release\netcoreapp2.1\SubstitutionCipher.csprojAssemblyReference.cache
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Release\netcoreapp2.1\SubstitutionCipher.csproj.CoreCompileInputs.cache
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Release\netcoreapp2.1\SubstitutionCipher.AssemblyInfoInputs.cache
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Release\netcoreapp2.1\SubstitutionCipher.AssemblyInfo.cs
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Release\netcoreapp2.1\SubstitutionCipher.dll
+C:\Users\USER-\source\repos\C-sharp\SubstitutionCipher\SubstitutionCipher\obj\Release\netcoreapp2.1\SubstitutionCipher.pdb
